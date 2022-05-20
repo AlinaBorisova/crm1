@@ -1,11 +1,11 @@
 'use strict';
 
-const heading = document.querySelectorAll('h1');
+const heading = document.querySelector('h1');
 console.log(heading);
-const modalForm = document.querySelectorAll('form');
+const modalForm = document.querySelectorAll('form')[1];
 console.log(modalForm);
-const modalCheckbox = document.querySelectorAll('.modal__checkbox');
+const modalCheckbox = document.querySelector('.modal__checkbox');
 console.log(modalCheckbox);
-const nearCheckbox = document.querySelectorAll('.modal__checkbox-wrapper');
+const nearCheckbox = document.querySelector('.modal__checkbox-wrapper');
 console.log(nearCheckbox);
 
