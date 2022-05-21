@@ -8,7 +8,7 @@ const modalForm = document.querySelectorAll('form')[1];
 console.log(modalForm);
 
 //Вместо querySelectorAll я написала querySelector
-const modalCheckbox = document.querySelector('.modal__checkbox');
+const modalCheckbox = document.querySelectorAll('.modal__input')[4];
 console.log(modalCheckbox);
 
 //Вместо querySelectorAll я написала querySelector
