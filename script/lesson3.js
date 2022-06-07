@@ -19,7 +19,6 @@ const base = [
     "discont": false,
     "count": 3,
     "units": "шт",
-    "amount": count * price,
     "images": {
       "small": "img/smrtxiaomi11t-m.jpg",
       "big": "img/smrtxiaomi11t-b.jpg"
@@ -34,7 +33,6 @@ const base = [
     "discont": 5,
     "count": 1,
     "units": "шт",
-    "amount": count * price,
     "images": {
       "small": "img/cheetancar-m.jpg",
       "big": "img/cheetancar-b.jpg"
@@ -49,7 +47,6 @@ const base = [
     "discont": 15,
     "count": 4,
     "units": "шт",
-    "amount": count * price,
     "images": {
       "small": "img/tvboxmecool-m.jpg",
       "big": "img/tvboxmecool-b.jpg"
@@ -88,7 +85,7 @@ const createRow = (base) => {
     <td class="table__cell">${base.units}</td>
     <td class="table__cell">${base.count}</td>
     <td class="table__cell">${base.price}</td>
-    <td class="table__cell">${base.amount}</td></td>
+    <td class="table__cell">${base.count * base.price}</td></td>
     <td class="table__cell table__cell_btn-wrapper">
       <button class="table__btn table__btn_pic"></button>
       <button class="table__btn table__btn_edit"></button>
