@@ -71,21 +71,18 @@ console.log(base);
 
 
 
-const createRow = (base) => {
-
-  const table__cell = document.querySelectorAll('.table__cell');
-  //console.log(table__cell);
-
+const createRow = (obj) => {
   const goodsItem = `
-    <td class="table__cell">${base.id}</td>
-    <td class="table__cell table__cell_left table__cell_name" data-id="24601654816512">
-      <span class="table__cell-id">${base.title}</span>
-      ${base.description}</td>
-    <td class="table__cell table__cell_left">${base.category}</td>
-    <td class="table__cell">${base.units}</td>
-    <td class="table__cell">${base.count}</td>
-    <td class="table__cell">${base.price}</td>
-    <td class="table__cell">${base.count * base.price}</td></td>
+    <td class="table__cell">${obj.id}</td>
+    <td class="table__cell table__cell_left table__cell_name" data-id="${obj.id}">
+      <span class="table__cell-id">${obj.id}</span>
+      ${obj.title}
+    </td>
+    <td class="table__cell table__cell_left">${obj.category}</td>
+    <td class="table__cell">${obj.units}</td>
+    <td class="table__cell">${obj.count}</td>
+    <td class="table__cell">${obj.price}</td>
+    <td class="table__cell">${obj.count * obj.price}</td></td>
     <td class="table__cell table__cell_btn-wrapper">
       <button class="table__btn table__btn_pic"></button>
       <button class="table__btn table__btn_edit"></button>
@@ -97,10 +94,9 @@ const createRow = (base) => {
   goods.innerHTML = goodsItem;
   tableBody.append(goods);
   console.log(goods);
-
 }
 
-const renderGoods = (base) => {
+const renderGoods = (arr) => {
   for (let i = 0; i < base.length; i++) {
     createRow(base[i]);
   }
