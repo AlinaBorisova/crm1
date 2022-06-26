@@ -1,24 +1,20 @@
 'use strict';
 
 const btnAdd = document.querySelector('.panel__add-goods');
-console.log(btnAdd);
-
 btnAdd.addEventListener('click', () => {
-    overlay.classList.add('active');
+  overlay.classList.add('active');
 });
 
-const form = document.querySelector('.overlay__modal modal');
-console.log(form)
-
-/*form.addEventListener('click', event => {
+const form = document.querySelector('.overlay');
+form.addEventListener('click', event => {
   event.stopPropagation();
 });
 
-formOverlay.addEventListener('click', () => {
-  formOverlay.classList.remove('is-visible')
+form.addEventListener('click', () => {
+  form.classList.remove('active')
 });
 
-const btnClose = document.querySelector('.modal__close"');
+const btnClose = document.querySelector('.modal__close');
   btnClose.addEventListener('click', () => {
-    overlay.classList.remove('active');
-  });*/
+    form.classList.remove('active');
+  });
