@@ -1,10 +1,7 @@
 'use strict';
 
 const overlay = document.querySelector('.overlay');
-console.log(overlay);
-
 overlay.classList.remove('active');
-console.log(overlay);
 
 const tableBody  = document.querySelector('.table__body');
 console.log(tableBody);
