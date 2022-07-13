@@ -68,9 +68,9 @@ console.log(base);
 
 
 
-const createRow = (obj) => {
+const createRow = (obj, i) => {
   const goodsItem = `
-    <td class="table__cell">${obj.id}</td>
+    <td class="table__cell">${i}</td>
     <td class="table__cell table__cell_left table__cell_name" data-id="${obj.id}">
       <span class="table__cell-id">${obj.id}</span>
       ${obj.title}
@@ -95,7 +95,7 @@ const createRow = (obj) => {
 
 const renderGoods = (arr) => {
   for (let i = 0; i < base.length; i++) {
-    createRow(base[i]);
+    createRow(base[i], i);
   }
 }
 renderGoods(base);

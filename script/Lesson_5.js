@@ -1,24 +1,37 @@
 'use strict';
-
 const btnAdd = document.querySelector('.panel__add-goods');
-btnAdd.addEventListener('click', () => {
-  overlay.classList.add('active');
-});
+const formOverlay = document.querySelector('.overlay');
+const btnClose = document.querySelector('.modal__close');
 
-const form = document.querySelector('.overlay');
- form.addEventListener('click', e => {
-  const target = e.target;
-   console.log(target)
-   if (target === form ||
+const modalControl = (btnAdd, formOverlay) => {
+  const openModal = () => {
+    overlay.classList.add('active');
+    const modalId = document.querySelector('.vendor-code__id');
+      modalId.textContent = `${base.length + 1}`;
+  }
+  btnAdd.addEventListener('click', openModal);
+
+  const closeModal = () => {
+    formOverlay.classList.remove('active');
+  };
+
+  formOverlay.addEventListener('click', e => {
+    const target = e.target;
+      console.log(target)
+      if (target === formOverlay ||
         target.closest('.overlay__modal modal')) {
-         form.classList.remove('active');
-   };
- });
-
- const btnClose = document.querySelector('.modal__close');
-  btnClose.addEventListener('click', () => {
-    form.classList.remove('active');
+          closeModal();
+      };
   });
+
+  btnClose.addEventListener('click', () => {
+    formOverlay.classList.remove('active');
+  });
+
+  return {
+    closeModal,
+  };
+}
 
 const btnDel = document.querySelectorAll('.table__btn_del');
   for (let i = 0; i < btnDel.length; i++) {
@@ -31,3 +44,6 @@ const btnDel = document.querySelectorAll('.table__btn_del');
       };
     });
   };
+
+  const {closeModal} = modalControl(btnAdd, formOverlay)
+  closeModal();
