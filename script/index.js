@@ -1,17 +1,33 @@
-'use strict';
-//Вместо querySelectorAll я написала querySelector
-const heading = document.querySelector('h1');
-console.log(heading);
+import {renderGoods} from './modules/render.js';
+import {getModalTotalPrice} from './modules/modal.js';
+import {
+  modalControl,
+  deleteControl,
+  formComtrol,
+} from './modules/control.js';
+import {getElements} from './modules/getElements.js';
 
-// Указала, что нужен имеено элемент под 1 индексом
-const modalForm = document.querySelectorAll('form')[1];
-console.log(modalForm);
+const base = [];
 
-//Вместо querySelectorAll я написала querySelector
-const modalCheckbox = document.querySelectorAll('.modal__input')[4];
-console.log(modalCheckbox);
+export const setTotalPrice = (base) => {
+  let totalCost = 0;
+  base.forEach((item) => {
+    totalCost += item.price * item.count;
+  });
+  getElements().totalPrice.textContent = totalCost;
+};
 
-//Вместо querySelectorAll я написала querySelector
-const nearCheckbox = document.querySelector('.modal__checkbox-wrapper');
-console.log(nearCheckbox);
+{
+  const elem = getElements();
+  const init = () => {
+    if(base.length> 0) renderGoods(base);
+    const {closeModal} = modalControl(elem.formOverlay)
+    closeModal();
 
+    formComtrol(elem.form, elem.tableBody, closeModal);
+    getModalTotalPrice();
+    setTotalPrice(base);
+    deleteControl();
+  }
+  window.crm = init;
+}

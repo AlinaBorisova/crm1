@@ -11,16 +11,18 @@
   <link rel="preload" href="fonts/inter-v7-latin_cyrillic-700.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="stylesheet" href="css/index.css">
-  <script src="script/index.js" defer></script>
-  <!-- <script src="script/lesson3.js" defer></script> -->
-  <script src="script/Lesson_5.js" defer></script>
-  <script src="script/Lesson_7.js" defer></script>
+  <script type="module" src="script/index.js" defer></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      crm();
+    })
+  </script>
 
   <title>CRM</title>
 </head>
 
 <body>
-
   <section class="crm">
     <div class="container">
       <header class="crm__header">
