@@ -1,9 +1,18 @@
 import {getElements} from './getElements.js';
+import {base} from '../index.js';
+
+export const index = function(base) {
+  let sum = 0;
+    for (let i = 0; i < base.length; i++) {
+      sum++;
+    }
+    return sum;
+}
 
 export const createRow = (form) => {
-  const index = form.id; 
+  const row = index(base);
   const goodsItem = `
-    <td class="table__cell">${index}</td>
+    <td class="table__cell">${row}</td>
     <td class="table__cell table__cell_left table__cell_name" data-id="${form.id}">
       <span class="table__cell-id">${form.id}</span>
       ${form.name}
@@ -23,4 +32,4 @@ export const createRow = (form) => {
   const goods = document.createElement('tr');
   goods.innerHTML = goodsItem;
   getElements().tableBody.append(goods);
-};
+}

@@ -27,3 +27,11 @@ export const getModalTotalPrice = function() {
     if (elem.modalPrice === "") alert('Введите цену');
   });
 };
+
+export const setTotalPrice = (base) => {
+  let totalCost = 0;
+  base.forEach((item) => {
+    totalCost += item.price * item.count;
+  });
+  getElements().totalPrice.textContent = totalCost;
+};
