@@ -16,6 +16,8 @@ export const getElements = function() {
   const modalCount = document.querySelector('#count');
   const totalPrice = document.querySelector('.crm__total-price');
  
+  const lastRowId = document.querySelector('.vendor-code__id').textContent;
+  
   return {
     heading,
     modalForm,
@@ -33,5 +35,6 @@ export const getElements = function() {
     modalPrice,
     modalCount,
     totalPrice,
+    lastRowId,
   };
 };

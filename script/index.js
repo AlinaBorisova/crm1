@@ -2,7 +2,6 @@ import {renderGoods} from './modules/render.js';
 import {getModalTotalPrice} from './modules/price.js';
 import {
   modalControl,
-  deleteControl,
   formComtrol,
 } from './modules/control.js';
 import {getElements} from './modules/getElements.js';

@@ -35,3 +35,12 @@ export const setTotalPrice = (base) => {
   });
   getElements().totalPrice.textContent = totalCost;
 };
+
+export const updateTotalPrice = (base) => {
+  document.querySelector('.crm__total-price').innerHTML = ""
+  let totalCost = 0;
+  base.forEach((item) => {
+    totalCost += item.price * item.count;
+  });
+  getElements().totalPrice.textContent = totalCost;
+}
