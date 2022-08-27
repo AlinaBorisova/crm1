@@ -7,7 +7,7 @@ export const modalControl = (formOverlay) => {
   const elem = getElements();
   const openModal = () => {
     elem.formOverlay.classList.add('active');
-    elem.modalId.textContent = `${setRowId()}`;
+    elem.modalId.textContent = `${setRowId(base)}`;
   }
   elem.btnAdd.addEventListener('click', openModal);
 
@@ -48,12 +48,13 @@ export const deleteControl = function() {
 };
 
 
-const setRowId = () => {
-  let getId = getElements().lastRowId;
-  getId++;
-
-  return getId;
-
+const setRowId = (base) => {
+  let lastId = 0;
+  base.forEach(item => {
+    if(item.id > lastId) lastId = item.id;
+  });
+  lastId++;
+  return lastId;
 };
 
 const updateRowIndex = () => {
@@ -68,7 +69,7 @@ export const formComtrol = (form, tableBody, closeModal) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const newGoods = Object.fromEntries(formData);
-    newGoods.id = setRowId() - 1;
+    newGoods.id = setRowId(base);
     base.push(newGoods); 
     createRow(newGoods, base.length, tableBody);
   
