@@ -64,7 +64,6 @@ const updateRowIndex = () => {
 };
 
 const picControl = () => {
-  console.log(screen.height)
   const elem = getElements();
     for (let i = 0; i < elem.buttonPic.length; i++) {
       elem.buttonPic[i].setAttribute('data-pic', 'url');
