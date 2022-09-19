@@ -7,6 +7,8 @@ import {
 import {getElements} from './modules/getElements.js';
 import {setTotalPrice} from './modules/price.js';
 
+// import {createWin} from './modules/createElements.js';
+
 export const base = [];
 
 {
@@ -18,6 +20,7 @@ export const base = [];
     formComtrol(elem.form, elem.tableBody, closeModal);
     getModalTotalPrice();
     setTotalPrice(base);
-  }
+    // createWin();
+  };
   window.crm = init;
-}
+};

@@ -47,7 +47,6 @@ export const deleteControl = function() {
   }; 
 };
 
-
 const setRowId = (base) => {
   let lastId = 0;
   base.forEach(item => {
@@ -64,6 +63,20 @@ const updateRowIndex = () => {
   }) 
 };
 
+const picControl = () => {
+  console.log(screen.height)
+  const elem = getElements();
+    for (let i = 0; i < elem.buttonPic.length; i++) {
+      elem.buttonPic[i].setAttribute('data-pic', 'url');
+      elem.buttonPic[i].addEventListener('click', e => {
+        const target = e.target;
+          if (target.closest('.table__body')) {
+            open('https://s1.1zoom.ru/big0/651/Forests_Rivers_Bridges_Parks_USA_Lewis_River_576703_1280x1024.jpg', '', 'width=800,height=600,top=66,left=368');
+          };
+      });
+    }; 
+};
+
 export const formComtrol = (form, tableBody, closeModal) => {
   form.addEventListener('submit', e => {
     e.preventDefault();
@@ -74,6 +87,7 @@ export const formComtrol = (form, tableBody, closeModal) => {
     createRow(newGoods, base.length, tableBody);
   
     deleteControl();
+    picControl();
     form.reset();
     closeModal();
     setTotalPrice(base);
