@@ -23,8 +23,3 @@ export const createRow = (form, index) => {
   goods.innerHTML = goodsItem;
   getElements().tableBody.append(goods);
 }
-
-// export const createWin = () => {
-//   console.log(getElements().buttonPic)
-// open('about:blank', '', 'width=300, heigth=300')
-// };

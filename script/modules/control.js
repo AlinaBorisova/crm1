@@ -17,10 +17,10 @@ export const modalControl = (formOverlay) => {
   
   formOverlay.addEventListener('click', e => {
     const target = e.target;
-      if (target === formOverlay ||
-        target.closest('.overlay__modal modal')) {
-          closeModal();
-      };
+    if (target === formOverlay ||
+      target.closest('.overlay__modal modal')) {
+        closeModal();
+    };
   });
   
   elem.btnClose.addEventListener('click', () => {
@@ -36,9 +36,9 @@ export const deleteControl = function() {
   for (let i = 0; i < getElements().btnDel.length; i++) {
     getElements().btnDel[i].addEventListener('click', e => {
       const target = e.target;
-        if (target.closest('.table__body')) {
-          target.closest('tr').remove();
-          base.splice([i], 1);
+      if (target.closest('.table__body')) {
+        target.closest('tr').remove();
+        base.splice([i], 1);
       };
       updateRowIndex();
       deleteControl();
@@ -57,7 +57,7 @@ const setRowId = (base) => {
 };
 
 const updateRowIndex = () => {
-  document.querySelector('.table__body').innerHTML = ""
+  document.querySelector('.table__body').innerHTML = "";
   base.forEach((item, index) => {
     createRow(item, index + 1);
   }) 
@@ -65,15 +65,14 @@ const updateRowIndex = () => {
 
 const picControl = () => {
   const elem = getElements();
-    for (let i = 0; i < elem.buttonPic.length; i++) {
-      elem.buttonPic[i].setAttribute('data-pic', '..//img/Forests.jpg');
-      elem.buttonPic[i].addEventListener('click', e => {
-        const target = e.target;
-          if (target.closest('.table__body')) {
-            open('about:block', '', 'width=800, height=600, top='+((screen.height-600)/2)+',left='+((screen.width-800)/2)+'');
-          };
-      });
-    }; 
+  for (let i = 0; i < elem.buttonPic.length; i++) {
+    elem.buttonPic[i].setAttribute('data-pic', '/img/Forests.jpg');
+    elem.buttonPic[i].addEventListener('click', e => {
+      const target = e.target;
+      const img = target.getAttribute('data-pic');
+      open(img, 'Image', 'width=800, height=600, top='+((screen.height/2)-330)+',left='+((screen.width-800)/2)+'');
+    });
+  }; 
 };
 
 export const formComtrol = (form, tableBody, closeModal) => {
