@@ -6,7 +6,7 @@ import {
 } from './modules/control.js';
 import {getElements} from './modules/getElements.js';
 import {setTotalPrice} from './modules/price.js';
-
+import {updateImage} from './modules/control.js';
 export const base = [];
 
 {
@@ -18,6 +18,7 @@ export const base = [];
     formComtrol(elem.form, elem.tableBody, closeModal);
     getModalTotalPrice();
     setTotalPrice(base);
+    updateImage();
   };
   window.crm = init;
 };

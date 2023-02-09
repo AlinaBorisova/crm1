@@ -92,3 +92,31 @@ export const formComtrol = (form, tableBody, closeModal) => {
     console.log(base);
   });
 };
+
+export const updateImage = () => {
+  const file = document.querySelector('.modal__file');
+  file.classList.remove('visually-hidden');
+
+  const preview = document.createElement('img');
+  preview.classList.add('preview');
+  
+  const text = document.createElement('div');
+  text.style.cssText = `
+    color: red;
+    font-weight:bold;
+  `;
+
+  document.querySelector('.modal__fieldset').append(preview, text);
+
+  file.addEventListener('change', () => {
+    if(file.files.length > 0) {
+      const src = URL.createObjectURL(file.files[0]);
+      if(file.files[0].size <= 1048576) {
+        preview.src = src;
+        text.textContent ='';     
+      } else {
+        text.textContent = 'Изображение не должно превышать 1 Мб';
+      };
+    };
+  });
+};
