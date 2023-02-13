@@ -1,12 +1,9 @@
 import {getElements} from './getElements.js';
 
-export const createRow = (form, index) => {
+export const createRow = (form) => {
   const goodsItem = `
-    <td class="table__cell">${index}</td>
-    <td class="table__cell table__cell_left table__cell_name" data-id="${form.id}">
-      <span class="table__cell-id">${form.id}</span>
-      ${form.name}
-    </td>
+    <td class="table__cell">${form.id}</td>
+    <td class="table__cell table__cell_left table__cell_name" data-id="${form.id}">${form.name}</td>
     <td class="table__cell table__cell_left">${form.category}</td>
     <td class="table__cell">${form.units}</td>
     <td class="table__cell">${form.count}</td>

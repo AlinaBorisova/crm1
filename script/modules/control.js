@@ -58,8 +58,8 @@ const setRowId = (base) => {
 
 const updateRowIndex = () => {
   document.querySelector('.table__body').innerHTML = "";
-  base.forEach((item, index) => {
-    createRow(item, index + 1);
+  base.forEach((item) => {
+    createRow(item);
   }) 
 };
 
