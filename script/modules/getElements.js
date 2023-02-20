@@ -16,7 +16,10 @@ export const getElements = function() {
   const modalCount = document.querySelector('#count');
   const totalPrice = document.querySelector('.crm__total-price');
   const lastRowId = document.querySelector('.vendor-code__id').textContent;
-  const buttonPic = document.querySelectorAll('.table__btn_pic')
+  const buttonPic = document.querySelectorAll('.table__btn_pic');
+  const overlayDelete = document.querySelector('.overlay_delete');
+  const btnDeleteAsk = document.querySelector('.button_delete');
+  const btnCancelAsk = document.querySelector('.button_cancel');
 
   return {
     heading,
@@ -37,5 +40,8 @@ export const getElements = function() {
     totalPrice,
     lastRowId,
     buttonPic,
+    overlayDelete,
+    btnDeleteAsk,
+    btnCancelAsk,
   };
 };

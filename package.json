@@ -1,0 +1,10 @@
+{
+  "name": "crm1",
+  "version": "1.0.0",
+  "main": "./script/index.js",
+  "scripts": {
+    "start": "node script/index"
+  },
+  "author": "Alina Borisova",
+  "type": "module"
+}

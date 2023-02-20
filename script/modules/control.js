@@ -2,6 +2,9 @@ import {createRow} from './createElements.js';
 import {getElements} from './getElements.js';
 import {setTotalPrice, updateTotalPrice} from './price.js';
 import {base} from '../index.js';
+import {createModalDeleteGoods} from './createElements.js';
+import { fetchRequest } from './data.js';
+import {sendGoods} from './data.js';
 
 export const modalControl = (formOverlay) => {
   const elem = getElements();
@@ -32,20 +35,50 @@ export const modalControl = (formOverlay) => {
   };
 };
 
+// export const deleteControl = function() {
+//   for (let i = 0; i < getElements().btnDel.length; i++) {
+//     getElements().btnDel[i].addEventListener('click', e => {
+//       const target = e.target;
+//       if (target.closest('.table__body')) {
+//         target.closest('tr').remove();
+//         base.splice([i], 1);
+//       };
+//       updateRowIndex();
+//       deleteControl();
+//       updateTotalPrice(base);
+//     });
+//   }; 
+// };
+
 export const deleteControl = function() {
   for (let i = 0; i < getElements().btnDel.length; i++) {
     getElements().btnDel[i].addEventListener('click', e => {
       const target = e.target;
+
       if (target.closest('.table__body')) {
-        target.closest('tr').remove();
-        base.splice([i], 1);
+        getElements().overlayDelete.style.display = 'flex';
+
+        getElements().btnDeleteAsk.addEventListener('click', () => {
+          target.parentElement.parentElement.remove();
+          // console.log(target.closest('tr'))
+          // console.log(target.parentElement.parentElement)
+          base.splice([i], 1);
+          getElements().overlayDelete.style.display = 'none';
+        });
       };
-      updateRowIndex();
-      deleteControl();
-      updateTotalPrice(base);
+
+        updateRowIndex();
+        deleteControl();
+        updateTotalPrice(base);
+        
+        getElements().btnCancelAsk.addEventListener('click', () => {
+          getElements().overlayDelete.style.display = 'none';
+        });
     });
-  }; 
+  };
 };
+
+
 
 const setRowId = (base) => {
   let lastId = 0;
@@ -75,7 +108,7 @@ const picControl = () => {
   }; 
 };
 
-export const formComtrol = (form, tableBody, closeModal) => {
+export const formControl = (form, tableBody, closeModal) => {
   form.addEventListener('submit', e => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -83,17 +116,19 @@ export const formComtrol = (form, tableBody, closeModal) => {
     newGoods.id = setRowId(base);
     base.push(newGoods); 
     createRow(newGoods, base.length, tableBody);
+    sendGoods(form);
   
     deleteControl();
+    createModalDeleteGoods(base);
     picControl();
-    form.reset();
+    
     closeModal();
     setTotalPrice(base);
-    console.log(base);
+    form.reset();
   });
 };
 
-export const updateImage = () => {
+export const addImage = () => {
   const file = document.querySelector('.modal__file');
   file.classList.remove('visually-hidden');
 
