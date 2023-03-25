@@ -1,16 +1,42 @@
-import {createRow} from './createElements.js';
 import {getElements} from './getElements.js';
-import {setTotalPrice, updateTotalPrice} from './price.js';
-import {base} from '../index.js';
-import {createModalDeleteGoods} from './createElements.js';
-import { fetchRequest } from './data.js';
+import {fetchRequest} from './data.js';
 import {sendGoods} from './data.js';
+import {getModalTotalPrice} from './price.js';
+import {updateTotalPrice} from './price.js';
+
+export const toBase64 = file => new Promise((resolve, reject) => {
+  const reader = new FileReader();
+
+  reader.addEventListener('load', () => {
+    resolve(reader.result);
+    console.log('reader.result', reader.result)
+  });
+
+  reader.addEventListener('error', () => {
+    reject(err);
+  });
+
+  reader.readAsDataURL(file);
+});
+
+const checkboxCheck = () => {
+  const elem = getElements();
+
+  elem.modalInputDiscountCheckbox.addEventListener('change', e => {
+    if (e.target.checked) {
+      elem.modalInputDiscount.disabled = false;
+    } else {
+      elem.modalInputDiscount.disabled = true;
+    }
+  });
+};
 
 export const modalControl = (formOverlay) => {
   const elem = getElements();
   const openModal = () => {
     elem.formOverlay.classList.add('active');
-    elem.modalId.textContent = `${setRowId(base)}`;
+    elem.modalId.innerHTML = '';
+    checkboxCheck();
   }
   elem.btnAdd.addEventListener('click', openModal);
 
@@ -35,97 +61,33 @@ export const modalControl = (formOverlay) => {
   };
 };
 
-// export const deleteControl = function() {
-//   for (let i = 0; i < getElements().btnDel.length; i++) {
-//     getElements().btnDel[i].addEventListener('click', e => {
-//       const target = e.target;
-//       if (target.closest('.table__body')) {
-//         target.closest('tr').remove();
-//         base.splice([i], 1);
-//       };
-//       updateRowIndex();
-//       deleteControl();
-//       updateTotalPrice(base);
-//     });
-//   }; 
-// };
-
-export const deleteControl = function() {
-  for (let i = 0; i < getElements().btnDel.length; i++) {
-    getElements().btnDel[i].addEventListener('click', e => {
+export const deleteControl = function(data) {
+  const elem = getElements();
+  for (let i = 0; i < elem.btnDel.length; i++) {
+    elem.btnDel[i].addEventListener('click', e => {
       const target = e.target;
-
       if (target.closest('.table__body')) {
-        getElements().overlayDelete.style.display = 'flex';
+        elem.overlayDelete.style.display = 'flex';
+        const getId = target.getAttribute('data-id');
 
-        getElements().btnDeleteAsk.addEventListener('click', () => {
-          target.parentElement.parentElement.remove();
-          // console.log(target.closest('tr'))
-          // console.log(target.parentElement.parentElement)
-          base.splice([i], 1);
-          getElements().overlayDelete.style.display = 'none';
+        elem.btnDeleteAsk.addEventListener('click', () => {
+          fetchRequest(`goods/${getId}`, {
+            method: 'Delete',
+            headers: {
+              'Content-Type': 'aplication/json',
+            },
+          });
+
+          elem.overlayDelete.style.display = 'none';
+          updateTotalPrice(data)
         });
       };
-
-        updateRowIndex();
-        deleteControl();
-        updateTotalPrice(base);
-        
-        getElements().btnCancelAsk.addEventListener('click', () => {
-          getElements().overlayDelete.style.display = 'none';
-        });
+      deleteControl();
+      elem.btnCancelAsk.addEventListener('click', () => {
+        elem.overlayDelete.style.display = 'none';
+      });
     });
   };
-};
-
-
-
-const setRowId = (base) => {
-  let lastId = 0;
-  base.forEach(item => {
-    if(item.id > lastId) lastId = item.id;
-  });
-  lastId++;
-  return lastId;
-};
-
-const updateRowIndex = () => {
-  document.querySelector('.table__body').innerHTML = "";
-  base.forEach((item) => {
-    createRow(item);
-  }) 
-};
-
-const picControl = () => {
-  const elem = getElements();
-  for (let i = 0; i < elem.buttonPic.length; i++) {
-    elem.buttonPic[i].setAttribute('data-pic', '/img/Forests.jpg');
-    elem.buttonPic[i].addEventListener('click', e => {
-      const target = e.target;
-      const img = target.getAttribute('data-pic');
-      open(img, 'Image', 'width=800, height=600, top='+((screen.height/2)-330)+',left='+((screen.width-800)/2)+'');
-    });
-  }; 
-};
-
-export const formControl = (form, tableBody, closeModal) => {
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const newGoods = Object.fromEntries(formData);
-    newGoods.id = setRowId(base);
-    base.push(newGoods); 
-    createRow(newGoods, base.length, tableBody);
-    sendGoods(form);
-  
-    deleteControl();
-    createModalDeleteGoods(base);
-    picControl();
-    
-    closeModal();
-    setTotalPrice(base);
-    form.reset();
-  });
 };
 
 export const addImage = () => {
@@ -142,8 +104,8 @@ export const addImage = () => {
   `;
 
   document.querySelector('.modal__fieldset').append(preview, text);
-
-  file.addEventListener('change', () => {
+  
+  file.addEventListener('change', async () => {    
     if(file.files.length > 0) {
       const src = URL.createObjectURL(file.files[0]);
       if(file.files[0].size <= 1048576) {
@@ -154,4 +116,139 @@ export const addImage = () => {
       };
     };
   });
+};
+
+export const picControl = (data) => {
+  const elem = getElements();
+  
+  for (let i = 0; i < elem.buttonPic.length; i++) {
+    let imgUrl = `http://localhost:3000/${data[i].image}`;
+    elem.buttonPic[i].setAttribute('data-pic', imgUrl);
+
+    elem.buttonPic[i].addEventListener('click', e => {
+      const target = e.target;
+      const img = target.getAttribute('data-pic');
+      
+      open(img, 'Image', 'width=800, height=600, top='+((screen.height/2)-330)+',left='+((screen.width-800)/2)+'');
+    });
+  };
+};
+
+const editDataModal = (getId, data) => {
+  const elem = getElements();
+  data.forEach(item => {
+    let img = document.querySelector('.preview');
+
+    if (getId === item.id) {
+      elem.modalId.textContent = getId;
+      elem.modalInputTitle.value = item.title;
+      elem.modalInputCategory.value = item.category;
+      elem.modalInputDescription.value = item.description;
+      elem.modalInputUnits.value = item.units;
+      elem.modalInputCount.value = item.count;
+      elem.modalInputDiscount.value = item.discount;
+      elem.modalInputPrice.value = item.price;
+
+      if (elem.modalInputDiscount.value === 0 || elem.modalInputDiscount.value === '') {
+        elem.modalTotalPrice.textContent = `${item.price * item.count} p.`;
+      } else {
+        elem.modalTotalPrice.textContent = `${item.price * item.count * (1 - item.discount / 100)} p.`;
+      };
+      img.src = `http://localhost:3000/${item.image}`;
+
+      checkboxCheck();
+    };
+  });
+};
+
+export const editControl = function(data, form) {
+  const elem = getElements();
+  const modalTitle = document.querySelector('.modal__title');
+  const modalSubmit = document.querySelector('.modal__submit');
+
+  for (let i = 0; i < elem.btnEdit.length; i++) {
+    elem.btnEdit[i].addEventListener('click', e => {
+      const target = e.target;
+      const getId = target.getAttribute('data-id');
+
+      modalTitle.textContent = 'Изменить товар';
+      modalSubmit.textContent = 'Изменить товар';
+
+      fetchRequest(`goods/${getId}`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'aplication/json',
+        },
+        callback() {
+          editDataModal(getId, data);
+        },
+      });
+
+      elem.formOverlay.classList.add('active');
+
+      modalSubmit.addEventListener('click', () => {
+        let img = document.querySelector('.preview');
+        
+        fetchRequest(`goods/${getId}`, {
+          method: 'PATCH',
+          body: {
+            title: form.title.value, 
+            description: form.description.value, 
+            price: form.price.value, 
+            discount: form.discount.value, 
+            count: form.count.value, 
+            units: form.units.value, 
+            images: img.src || [],
+          },
+          headers: {
+            'Content-Type': 'aplication/json',
+          },
+          callback() {
+            editDataModal(getId, data);
+          },
+        });
+      });
+    editControl(data);
+    });
+  };
+};
+
+export const getCategory = (err, data) => {
+  const labelCategory = document.querySelector('.modal__label_category');
+  labelCategory.children[1].setAttribute('list', 'category-list');
+
+  const datalist = document.createElement('datalist');
+  datalist.setAttribute('id', 'category-list');
+
+
+  data.map(item => {
+    const option = document.createElement('option');
+    option.setAttribute('value', item);
+    datalist.append(option);
+  });
+  labelCategory.children[1].append(datalist)
+  
+  if (err) {
+    console.warn(err, data);
+    const h2 = document.createElement('h2');
+    h2.style.color = 'red';
+    h2.textContent = err;
+    document.body.append(h2);
+    return;
+  };
+};
+
+export const formControl = (form) => {
+  getModalTotalPrice()
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+    const newGoods = Object.fromEntries(formData);
+    
+    const result = await toBase64(newGoods.image);
+    
+    sendGoods(form, result);
+  });
+
 };

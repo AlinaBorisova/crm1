@@ -7,24 +7,28 @@ export const discountModal = function() {
     } else {
       discount.disabled = true;
       discount.value = '';
-      }
-    });
+    };
+  });
 };
 
 export const getModalTotalPrice = function() {
   const elem = getElements();
   const modalTotalPrice = () => {
-    elem.modalTotal.textContent = elem.modalCount.value * elem.modalPrice.value;
+    if (elem.modalInputDiscount.value === '' || elem.modalInputDiscount.value === 0) {
+    elem.modalTotalPrice.textContent = elem.modalInputCount.value * elem.modalInputPrice.value;
+    } else if (elem.modalInputDiscount.value > 0) {
+      elem.modalTotalPrice.textContent = elem.modalInputCount.value * elem.modalInputPrice.value * (1 - elem.modalInputDiscount.value / 100);
+    };
   };
 
-  elem.modalCount.addEventListener('blur', () => {
+  elem.modalInputCount.addEventListener('change', () => {
     modalTotalPrice();
-    if (elem.modalCount === "") alert('Введите количество');
+    if (elem.modalInputCount.value === "") alert('Введите количество');
   });
 
-  elem.modalPrice.addEventListener('blur', () => {
+  elem.modalInputPrice.addEventListener('change', () => {
     modalTotalPrice();
-    if (elem.modalPrice === "") alert('Введите цену');
+    if (elem.modalInputPrice.value === "") alert('Введите цену');
   });
 };
 
@@ -33,7 +37,7 @@ export const setTotalPrice = (base) => {
   base.forEach((item) => {
     totalCost += item.price * item.count;
   });
-  getElements().totalPrice.textContent = totalCost;
+  getElements().totalPrice.textContent = `${totalCost} р.`;
 };
 
 export const updateTotalPrice = (base) => {
@@ -43,4 +47,4 @@ export const updateTotalPrice = (base) => {
     totalCost += item.price * item.count;
   });
   getElements().totalPrice.textContent = totalCost;
-}
+};

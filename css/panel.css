@@ -4,7 +4,7 @@
 }
 
 .panel__filter {
-  background-image: url("../img/filter.svg");
+  background-image: url("../image/filter.svg");
   background-position: left 10px center;
   background-repeat: no-repeat;
   background-color: transparent;
@@ -22,7 +22,7 @@
   background: #F4F2FF;
   border-radius: 6px;
   flex-basis: 400px;
-  background-image: url("../img/search.svg");
+  background-image: url("../image/search.svg");
   background-position: left 10px center;
   background-repeat: no-repeat;
   margin-right: 20px;
