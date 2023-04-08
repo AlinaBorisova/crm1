@@ -21,19 +21,19 @@ export const fetchRequest = async (postfix, {
     if (response.ok) {
       const data = await response.json();
       if (callback) {
-        
         return callback(null, data);
       };
     };
-    
-    throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
-  } catch (err) {
+  }
+  catch (err) {
+    new Error(`Ошибка ${response.status}: ${response.statusText}`);
     return callback(err);
   };
 
 };
 
 export const sendGoods = (form, result) => {
+
   return new Promise (resolve => {
     resolve(true);
     
@@ -56,7 +56,7 @@ export const sendGoods = (form, result) => {
           createModalError(err.message);         
         } else {
           form.reset();
-        }
+        };
       },
       headers: {
         'Content-Type': 'aplication/json',

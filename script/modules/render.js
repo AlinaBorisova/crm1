@@ -6,7 +6,7 @@ import {editControl} from './control.js';
 import {picControl} from './control.js';
 import {setTotalPrice} from './price.js';
 
-export const renderGoods = (err, data) => {
+export const renderGoods = async (err, data) => {
   const form = getElements().form;
   
   if (err) {
@@ -18,7 +18,7 @@ export const renderGoods = (err, data) => {
     return;
   };
   
-  data.map((item, i) => {
+  await data.map((item, i) => {
     createRow(item, i);
   });
 
@@ -29,19 +29,34 @@ export const renderGoods = (err, data) => {
   setTotalPrice(data);
 };
 
-const filterSearch = () => {
+const filterSearch = async () => {
   const inputSearch = document.querySelector('.panel__input');
   const searchValue = inputSearch.value;
   getElements().tableBody.innerHTML = '';
-  fetchRequest(`goods?search=${searchValue}`, {
+
+  await fetchRequest(`goods?search=${searchValue}`, {
     method: 'get',
     callback: renderGoods,
   });
+
 };
 
-export const searchGoods = () => {
+const searchGoods = () => {
   const inputSearch = document.querySelector('.panel__input');
-  inputSearch.addEventListener('input', () => {
-    setTimeout(filterSearch, 300);
+  // let timerId = null;
+  inputSearch.addEventListener('blur', () => {
+    // clearTimeout(timerId);
+    // timerId = setTimeout(filterSearch, 300);
+    // setTimeout(filterSearch, 300);
+    setTimeout(() => {
+      const inputSearch = document.querySelector('.panel__input');
+      const searchValue = inputSearch.value;
+      getElements().tableBody.innerHTML = '';
+
+      fetchRequest(`goods?search=${searchValue}`, {
+        method: 'get',
+        callback: renderGoods,
+      });
+    }, 300)
   });
 };
