@@ -86,37 +86,36 @@ export const modalControl = (formOverlay) => {
 };
 
 export const deleteControl = function(data) {
+  const tbody = getElements().tableBody;
   const elem = getElements();
-  for (let i = 0; i < elem.btnDel.length; i++) {
-    elem.btnDel[i].addEventListener('click', event => {
-      event.preventDefault();
-      const target = event.target;
-      if (target.closest('.table__body')) {
-        elem.overlayDelete.style.display = 'flex';
 
-        elem.btnDeleteAsk.addEventListener('click',  event => {
-          event.preventDefault();
-          elem.overlayDelete.style.display = 'none';
-          updateTotalPrice(data);
-          const getId = target.getAttribute('data-id');
+  tbody.addEventListener('click', event => {
+    event.preventDefault();
+    const target = event.target;
+    if (target.closest('.table__btn_del')) {
+      elem.overlayDelete.style.display = 'flex';
 
-          fetchRequest(`goods/${getId}`, {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'aplication/json',
-            },
-            body: null,
-          });
+      elem.btnDeleteAsk.addEventListener('click',  (event) => {
+        event.preventDefault();
+        elem.overlayDelete.style.display = 'none';
+        updateTotalPrice(data);
+        const getId = target.getAttribute('data-id');
+
+        fetchRequest(`goods/${getId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'aplication/json',
+          },
+          body: null,
         });
-      };
+      });
 
-      deleteControl(data);
-
-      elem.btnCancelAsk.addEventListener('click', () => {
+      elem.btnCancelAsk.addEventListener('click', (event) => {
+        event.preventDefault();
         elem.overlayDelete.style.display = 'none';
       });
-    });
-  };
+    }
+  })
 };
 
 export const addImage = () => {
@@ -149,7 +148,7 @@ export const addImage = () => {
 
 export const picControl = (data) => {
   const elem = getElements();
-  
+
   for (let i = 0; i < elem.buttonPic.length; i++) {
     elem.buttonPic[i].addEventListener('click', e => {
       let imgUrl = `http://localhost:3000/${data[i].image}`;
@@ -191,14 +190,50 @@ const getEditDataModal = (getId, data) => {
   });
 };
 
+const editPatch = (form, getId) => {
+  form.addEventListener('submit', async event => {
+    event.preventDefault()
+
+    const formData = new FormData(event.target);
+    const newGoods = Object.fromEntries(formData);
+    const result = await toBase64(newGoods.image);
+
+    fetchRequest(`goods/${getId}`, {
+      method: 'PATCH',
+      body: {
+        title: form.title.value,
+        description: form.description.value,
+        category: form.category.value,
+        price: form.price.value,
+        units: form.units.value,
+        count : form.count.value,
+        discount: form.discount.value,
+        image: result || [],
+      },
+      callback(err, data) {       
+        if (err) {
+          console.warn(err, data)
+          createModalError(err.message);         
+        } else {
+          form.reset();
+        };
+      },
+      headers: {
+        'Content-Type': 'aplication/json',
+      },
+    });
+  });
+};
+
 export const editControl = function(data, form) {
+  const tbody = getElements().tableBody;
   const elem = getElements();
   const modalTitle = document.querySelector('.modal__title');
   const modalSubmit = document.querySelector('.modal__submit');
 
-  for (let i = 0; i < elem.btnEdit.length; i++) {
-    elem.btnEdit[i].addEventListener('click', e => {
-      const target = e.target;
+  tbody.addEventListener('click', event => {
+    const target = event.target;
+    if (target.closest('.table__btn_edit')) {
       const getId = target.getAttribute('data-id');
 
       modalSubmit.classList.add('submit_edit');
@@ -217,44 +252,9 @@ export const editControl = function(data, form) {
 
       elem.formOverlay.classList.add('active');
 
-      if (modalSubmit.classList.contains('submit_edit')) {
-        form.addEventListener('submit', async event => {
-          event.preventDefault()
-
-          const formData = new FormData(e.target);
-          const newGoods = Object.fromEntries(formData);
-          const result = await toBase64(newGoods.image);
-
-          fetchRequest(`goods/${getId}`, {
-            method: 'PATCH',
-            body: {
-              title: form.title.value,
-              description: form.description.value,
-              category: form.category.value,
-              price: form.price.value,
-              units: form.units.value,
-              count : form.count.value,
-              discount: form.discount.value,
-              image: result || [],
-            },
-            
-            callback(err, data) {       
-              if (err) {
-                console.warn(err, data)
-                createModalError(err.message);         
-              } else {
-                form.reset();
-              };
-            },
-            headers: {
-              'Content-Type': 'aplication/json',
-            },
-          });
-        });
-      };
-      editControl(data, form);
-    });
-  };
+      if (modalSubmit.classList.contains('submit_edit')) editPatch(form, getId);
+    };
+  })
 };
 
 export const formControl = function(form, closeModal) {
@@ -273,5 +273,4 @@ export const formControl = function(form, closeModal) {
     
     closeModal();
   });
-
 };

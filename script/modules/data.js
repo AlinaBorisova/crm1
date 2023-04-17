@@ -23,7 +23,7 @@ export const fetchRequest = async (postfix, {
       if (callback) {
         return callback(null, data);
       };
-    };
+    } else createModalError();
   }
   catch (err) {
     new Error(`Ошибка ${response.status}: ${response.statusText}`);
@@ -37,7 +37,7 @@ export const sendGoods = (form, result) => {
   return new Promise (resolve => {
     resolve(true);
     
-    fetchRequest('goods', {
+    fetchRequest('good', {
       method: 'POST',
       body: {
         title: form.title.value,
@@ -49,11 +49,9 @@ export const sendGoods = (form, result) => {
         discount: form.discount.value,
         image: result || [],
       },
-      
       callback(err, data) {       
         if (err) {
           console.warn(err, data)
-          createModalError(err.message);         
         } else {
           form.reset();
         };

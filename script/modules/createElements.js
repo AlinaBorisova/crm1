@@ -58,10 +58,8 @@ export const createModalError = (err) => {
   const textError = document.createElement('p');
   textError.classList.add('text_error');
   textError.textContent = `Что-то пошло не так`;
-  if (err) {
-    textError.textContent = err;
 
-  }
+  if (err) textError.textContent = err;
 
   const imgError = document.createElement('img');
   imgError.classList.add('image_error');

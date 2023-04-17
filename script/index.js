@@ -7,7 +7,10 @@ import {getElements} from './modules/getElements.js';
 import {addImage} from './modules/control.js';
 import {fetchRequest} from './modules/data.js';
 import {createModalDeleteGoods} from './modules/createElements.js';
-import {getCategory} from './modules/control.js';
+import {getCategory} from './modules/control.js'
+import { searchGoods } from './modules/render.js';
+// import { createModalError } from './modules/createElements.js';
+
 
 const init = () => {
   const elem = getElements();
@@ -27,5 +30,7 @@ const init = () => {
   closeModal();
   formControl(elem.form, closeModal);
   addImage();
+  searchGoods();
 };
 init();
+
