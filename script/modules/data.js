@@ -37,7 +37,7 @@ export const sendGoods = (form, result) => {
   return new Promise (resolve => {
     resolve(true);
     
-    fetchRequest('good', {
+    fetchRequest('goods', {
       method: 'POST',
       body: {
         title: form.title.value,
