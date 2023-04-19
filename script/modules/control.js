@@ -190,38 +190,71 @@ const getEditDataModal = (getId, data) => {
   });
 };
 
-const editPatch = (form, getId) => {
+const editPatch = (form, getId, data) => {
   form.addEventListener('submit', async event => {
     event.preventDefault()
 
     const formData = new FormData(event.target);
     const newGoods = Object.fromEntries(formData);
     const result = await toBase64(newGoods.image);
-
-    fetchRequest(`goods/${getId}`, {
-      method: 'PATCH',
-      body: {
-        title: form.title.value,
-        description: form.description.value,
-        category: form.category.value,
-        price: form.price.value,
-        units: form.units.value,
-        count : form.count.value,
-        discount: form.discount.value,
-        image: result || [],
-      },
-      callback(err, data) {       
-        if (err) {
-          console.warn(err, data)
-          createModalError(err.message);         
-        } else {
-          form.reset();
-        };
-      },
-      headers: {
-        'Content-Type': 'aplication/json',
-      },
+    const imgGetFromData = data.forEach(item => {
+      if (getId === item.id) {
+        const imgData = `http://localhost:3000/${item.image}`;
+        return imgData;
+      };
     });
+
+    if (result.length > 6) {
+      fetchRequest(`goods/${getId}`, {
+        method: 'PATCH',
+        body: {
+          title: form.title.value,
+          description: form.description.value,
+          category: form.category.value,
+          price: form.price.value,
+          units: form.units.value,
+          count : form.count.value,
+          discount: form.discount.value,
+          image: result,
+        },
+        callback(err, data) {       
+          if (err) {
+            console.warn(err, data)
+            createModalError(err.message);         
+          } else {
+            form.reset();
+          };
+        },
+        headers: {
+          'Content-Type': 'aplication/json',
+        },
+      });
+    } else {
+      fetchRequest(`goods/${getId}`, {
+        method: 'PATCH',
+        body: {
+          title: form.title.value,
+          description: form.description.value,
+          category: form.category.value,
+          price: form.price.value,
+          units: form.units.value,
+          count : form.count.value,
+          discount: form.discount.value,
+          image: imgGetFromData,
+        },
+        callback(err, data) {       
+          if (err) {
+            console.warn(err, data)
+            createModalError(err.message);         
+          } else {
+            form.reset();
+          };
+        },
+        headers: {
+          'Content-Type': 'aplication/json',
+        },
+      });
+    };
   });
 };
 
@@ -252,9 +285,9 @@ export const editControl = function(data, form) {
 
       elem.formOverlay.classList.add('active');
 
-      if (modalSubmit.classList.contains('submit_edit')) editPatch(form, getId);
+      if (modalSubmit.classList.contains('submit_edit')) editPatch(form, getId, data);
     };
-  })
+  });
 };
 
 export const formControl = function(form, closeModal) {

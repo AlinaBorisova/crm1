@@ -47,7 +47,7 @@ export const sendGoods = (form, result) => {
         units: form.units.value,
         count : form.count.value,
         discount: form.discount.value,
-        image: result || [],
+        image: result,
       },
       callback(err, data) {       
         if (err) {
