@@ -1,6 +1,16 @@
-import {createModalError} from './createElements.js'; 
+import {createModalError} from "./modal.js";
 
 const URL = 'http://localhost:3000/api/';
+
+export const getGoods = async () => {
+  const response = await fetch(`http://localhost:3000/api/goods`);
+
+  if (response.ok) {
+    return response.json();
+  }
+
+  throw new Error(response.status);
+};
 
 export const fetchRequest = async (postfix, {
   method = 'GET',
@@ -12,7 +22,7 @@ export const fetchRequest = async (postfix, {
     const options = {
       method,
     };
-    
+
     if (body) options.body = JSON.stringify(body);
     if (headers) options.headers = headers;
 
@@ -36,7 +46,7 @@ export const sendGoods = (form, result) => {
 
   return new Promise (resolve => {
     resolve(true);
-    
+
     fetchRequest('goods', {
       method: 'POST',
       body: {
@@ -49,7 +59,7 @@ export const sendGoods = (form, result) => {
         discount: form.discount.value,
         image: result,
       },
-      callback(err, data) {       
+      callback(err, data) {
         if (err) {
           console.warn(err, data)
         } else {
@@ -60,7 +70,6 @@ export const sendGoods = (form, result) => {
         'Content-Type': 'aplication/json',
       },
     });
-    
   });
 };
 

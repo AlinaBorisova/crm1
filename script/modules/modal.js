@@ -1,35 +1,39 @@
 import {getElements} from './getElements.js';
+import {setTotalPrice} from './price.js';
+import {fetchRequest} from './data.js';
 
-export const createRow = (form, index) => {
-  const goods = document.createElement('tr');
-  goods.innerHTML = `
-    <td class="table__cell">${index + 1}</td>
-    <td class="table__cell table__cell_left table__cell_name" data-id="${form.id}">
-      <span class="table__cell-id">${form.id}</span>
-      ${form.title}
-    </td>
-    <td class="table__cell table__cell_left">${form.category}</td>
-    <td class="table__cell">${form.units}</td>
-    <td class="table__cell">${form.count}</td>
-    <td class="table__cell">${form.price}</td>
-    <td class="table__cell">${form.count * form.price}</td></td>
-    <td class="table__cell table__cell_btn-wrapper">
-      <button class="table__btn table__btn_pic" data-id="${form.id}"></button>
-      <button class="table__btn table__btn_edit" data-id="${form.id}"></button>
-      <button class="table__btn table__btn_del" data-id="${form.id}"></button>
-    </td>
-  `;
+const modalDeleteAsk = (getId, data, targetBtn, overlayAsk) => {
+  document.body.addEventListener('click', async ({target}) => {
+    if (target.closest('.button_delete')) {
+      targetBtn.closest('tr').remove();
+      if (getId) {
+        await fetchRequest(`goods/${getId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'aplication/json',
+          },
+        });
 
-  getElements().tableBody.append(goods);
+        getId = '';
+        overlayAsk.style.display = 'none';
+        setTotalPrice(data);
+      }
+    }
+
+    if (target.closest('.button_cancel')) {
+      overlayAsk.style.display = 'none';
+      getId = '';
+    }
+  });
 };
 
-export const createModalDeleteGoods = () => {
+export const createModalDeleteGoods = (data, getId, target) => {
   const overlayAsk = document.createElement('div');
   overlayAsk.classList.add('overlay_delete');
 
   const modalAsk = document.createElement('div');
   modalAsk.classList.add('modal_ask');
- 
+
   const textDelete = document.createElement('p');
   textDelete.classList.add('text_delete')
   textDelete.textContent = `Вы уверены, что хотите удалить товар?`;
@@ -42,9 +46,13 @@ export const createModalDeleteGoods = () => {
   btnCancel.classList.add('button_cancel');
   btnCancel.textContent = 'Отмена';
 
+
+
   modalAsk.append(textDelete, btnDelete, btnCancel);
   overlayAsk.append(modalAsk);
   document.body.append(overlayAsk);
+
+  modalDeleteAsk(getId, data, target, overlayAsk);
 };
 
 export const createModalError = (err) => {
@@ -54,7 +62,7 @@ export const createModalError = (err) => {
 
   const modalError = document.createElement('div');
   modalError.classList.add('modal_error');
- 
+
   const textError = document.createElement('p');
   textError.classList.add('text_error');
   textError.textContent = `Что-то пошло не так`;
@@ -64,14 +72,14 @@ export const createModalError = (err) => {
   const imgError = document.createElement('img');
   imgError.classList.add('image_error');
 
-  modalError.append(textError, imgError)
-  overlayError.append(modalError)
+  modalError.append(textError, imgError);
+  overlayError.append(modalError);
   document.body.append(overlayError);
 
   document.addEventListener('click', e => {
     const target = e.target;
     if (!(target.closest('.overlay_error'))) {
-        overlayError.style.display = 'none';
+      overlayError.style.display = 'none';
     };
   });
 };

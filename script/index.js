@@ -6,31 +6,27 @@ import {
 import {getElements} from './modules/getElements.js';
 import {addImage} from './modules/control.js';
 import {fetchRequest} from './modules/data.js';
-import {createModalDeleteGoods} from './modules/createElements.js';
-import {getCategory} from './modules/control.js'
-import { searchGoods } from './modules/render.js';
-// import { createModalError } from './modules/createElements.js';
+import {getCategory} from './modules/control.js';
+import {searchGoods} from './modules/render.js';
 
-
-const init = () => {
+const init = async () => {
   const elem = getElements();
 
-  fetchRequest('goods', {
-    method: 'get',
+  await fetchRequest('goods', {
+    method: 'GET',
     callback: renderGoods,
   });
 
-  fetchRequest('category', {
+  await fetchRequest('category', {
     method: 'get',
     callback: getCategory,
   });
 
   const {closeModal} = modalControl(elem.formOverlay);
-  createModalDeleteGoods();
   closeModal();
   formControl(elem.form, closeModal);
   addImage();
   searchGoods();
 };
-init();
 
+init();
