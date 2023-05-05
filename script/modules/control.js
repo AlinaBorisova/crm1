@@ -146,6 +146,21 @@ export const picControl = (data) => {
   };
 };
 
+const editedPicControl = (data) => {
+  const tbody = getElements().tableBody;
+
+  tbody.addEventListener('click', ({target}) => {
+    const elemPic = target.closest('.table__btn_pic')
+    if (elemPic) {
+      let imgUrl = `http://localhost:3000/${data.image}`;
+      elemPic.setAttribute('data-pic', imgUrl);
+
+      const img = target.getAttribute('data-pic');
+      open(img, 'Image', 'width=800, height=600, top=' + ((screen.height / 2) - 330) + ',left=' + ((screen.width - 800) / 2) + '');
+    }
+  });
+};
+
 const getEditDataModal = (getId, data) => {
   const elem = getElements();
   data.forEach(item => {
@@ -206,6 +221,7 @@ const editPatch = (form, getId, data) => {
             createModalError(err.message);
           } else {
             editRow(newGoods, getId)
+            editedPicControl(data);
             form.reset();
           }
         },
@@ -229,6 +245,7 @@ const editPatch = (form, getId, data) => {
             createModalError(err.message);
           } else {
             editRow(newGoods, getId)
+            editedPicControl(data);
             form.reset();
           }
         },
@@ -267,6 +284,8 @@ export const editControl = function(data, form) {
       if (modalSubmit.classList.contains('submit_edit')) {
         editPatch(form, getId, data);
         setTotalPrice(data);
+
+
       }
     };
   });
