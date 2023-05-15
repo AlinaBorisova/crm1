@@ -186,8 +186,10 @@ const getEditDataModal = (getId, resp) => {
 
   if (elem.modalInputDiscount.value === 0 || elem.modalInputDiscount.value === '') {
     elem.modalTotalPrice.textContent = `${resp.price * resp.count} p.`;
+    elem.modalInputDiscountCheckbox.checked = false;
   } else {
     elem.modalTotalPrice.textContent = `${resp.price * resp.count * (1 - resp.discount / 100)} p.`;
+    elem.modalInputDiscountCheckbox.checked = true;
   }
   img.src = `http://localhost:3000/${resp.image}`;
 
