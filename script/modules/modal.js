@@ -1,4 +1,3 @@
-import {getElements} from './getElements.js';
 import {setTotalPrice} from './price.js';
 import {fetchRequest} from './data.js';
 
@@ -35,7 +34,7 @@ export const createModalDeleteGoods = (data, getId, target) => {
   modalAsk.classList.add('modal_ask');
 
   const textDelete = document.createElement('p');
-  textDelete.classList.add('text_delete')
+  textDelete.classList.add('text_delete');
   textDelete.textContent = `Вы уверены, что хотите удалить товар?`;
 
   const btnDelete = document.createElement('button');
@@ -80,6 +79,6 @@ export const createModalError = (err) => {
     const target = e.target;
     if (!(target.closest('.overlay_error'))) {
       overlayError.style.display = 'none';
-    };
+    }
   });
 };

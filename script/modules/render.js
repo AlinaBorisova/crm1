@@ -29,7 +29,8 @@ export const renderGoods = async (err, data) => {
 export const searchGoods = () => {
   const inputSearch = document.querySelector('.panel__input');
 
-  inputSearch.addEventListener('input',  () => {
+  inputSearch.addEventListener('input',  (event) => {
+    event.preventDefault();
     const tableBody = getElements().tableBody;
     tableBody.innerHTML = '';
     let search = '';
@@ -43,5 +44,11 @@ export const searchGoods = () => {
         callback: renderGoods,
       });
     }, 300);
+  });
+
+  inputSearch.addEventListener('keydown', event => {
+    if (event.keyCode == 13) {
+      event.preventDefault();
+    }
   });
 };

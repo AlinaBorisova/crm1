@@ -1,13 +1,12 @@
-import {renderGoods} from './modules/render.js';
+import {renderGoods, searchGoods} from './modules/render.js';
 import {
-  modalControl,
   formControl,
+  addImage,
+  getCategory,
+  closeModal
 } from './modules/control.js';
 import {getElements} from './modules/getElements.js';
-import {addImage} from './modules/control.js';
 import {fetchRequest} from './modules/data.js';
-import {getCategory} from './modules/control.js';
-import {searchGoods} from './modules/render.js';
 
 const init = async () => {
   const elem = getElements();
@@ -22,9 +21,8 @@ const init = async () => {
     callback: getCategory,
   });
 
-  const {closeModal} = modalControl(elem.formOverlay);
   closeModal();
-  formControl(elem.form, closeModal);
+  formControl(elem.form);
   addImage();
   searchGoods();
 };

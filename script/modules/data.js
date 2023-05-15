@@ -32,18 +32,17 @@ export const fetchRequest = async (postfix, {
       const data = await response.json();
       if (callback) {
         return callback(null, data);
-      };
+      }
     } else createModalError();
   }
   catch (err) {
     new Error(`Ошибка ${response.status}: ${response.statusText}`);
     return callback(err);
-  };
+  }
 
 };
 
 export const sendGoods = (form, result) => {
-
   return new Promise (resolve => {
     resolve(true);
 
@@ -56,7 +55,7 @@ export const sendGoods = (form, result) => {
         price: form.price.value,
         units: form.units.value,
         count : form.count.value,
-        discount: form.discount.value,
+        discount: form.elements.discount_count.value,
         image: result,
       },
       callback(err, data) {
@@ -64,7 +63,7 @@ export const sendGoods = (form, result) => {
           console.warn(err, data)
         } else {
           form.reset();
-        };
+        }
       },
       headers: {
         'Content-Type': 'aplication/json',
